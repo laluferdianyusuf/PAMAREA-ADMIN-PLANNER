@@ -62,6 +62,8 @@ export interface PatrolRound {
   // checkpoints?: PatrolCheckpoint[];
 }
 
+export type PatrolRoundWithCheckpoints = PatrolRound;
+
 export interface PatrolRoundListResponse {
   userId: string;
   date: string;

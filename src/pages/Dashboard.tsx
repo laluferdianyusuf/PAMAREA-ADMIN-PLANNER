@@ -8,7 +8,7 @@ import {
   UserOctagon,
   Warning2,
 } from "iconsax-react";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import MapsCheckpoint from "../components/mapsCheckpoint/MapsCheckpoint";
 import { useSecurityUsers } from "../hooks/users/useUsers";
 import { usePatrolPoints } from "../hooks/patrol-point/usePatrolPoints";

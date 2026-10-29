@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   BarChart,
@@ -965,7 +965,7 @@ const RealTimeMonitor = () => {
 
                         <Tooltip
                           cursor={{ fill: "#f8fafc" }}
-                          formatter={(value: number | undefined) => [
+                          formatter={(value) => [
                             `${Number(value ?? 0).toFixed(1)}%`,
                             "Skor Kinerja",
                           ]}

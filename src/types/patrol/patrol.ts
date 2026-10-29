@@ -208,23 +208,6 @@ export interface BypassPatrolNfcResponse {
   gpsValidationStatus: GpsValidationStatus;
 }
 
-export interface SubmitPatrolAnswerItem {
-  questionId: string;
-  answerValue?: string;
-  answerLabel?: string;
-}
-
-export interface SubmitPatrolAnswersRequest {
-  answers: SubmitPatrolAnswerItem[];
-}
-
-export interface SubmitPatrolPhotoRequest {
-  answerId?: string;
-  latitude?: number;
-  longitude?: number;
-  capturedAt?: string;
-}
-
 /**
  * Response untuk memulai patroli berikutnya.
  * Backend mengembalikan detail patroli.

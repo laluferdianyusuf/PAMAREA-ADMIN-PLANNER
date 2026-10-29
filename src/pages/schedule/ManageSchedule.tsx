@@ -148,7 +148,7 @@ const ManageSchedule = () => {
     };
 
     try {
-      const result = await assignUser({
+      await assignUser({
         scheduleId: selectedSchedule.id,
         payload,
       });

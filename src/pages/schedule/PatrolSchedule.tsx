@@ -251,7 +251,7 @@ const PatrolSchedule = () => {
     };
 
     try {
-      const response = await createPS(payload);
+      await createPS(payload);
 
       closeModal("add_schedule");
 

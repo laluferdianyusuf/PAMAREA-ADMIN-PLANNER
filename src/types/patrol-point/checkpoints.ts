@@ -75,3 +75,20 @@ export interface PatrolPointSummary {
   radiusMeters: number;
   status: PatrolPointStatus;
 }
+
+/** Mock checkpoint shape used by checkpoint.service */
+export interface Checkpoint {
+  id: string;
+  code: string;
+  name: string;
+  site?: string;
+  description?: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  radiusMeters: number;
+  status: string;
+  nfcStatus?: string | null;
+}
+
+export type CreateCheckpointPayload = Omit<Checkpoint, "id">;
+export type UpdateCheckpointPayload = Partial<CreateCheckpointPayload>;

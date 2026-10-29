@@ -11,9 +11,10 @@ import type {
   ValidatePatrolNfcResponse,
   BypassPatrolNfcRequest,
   BypassPatrolNfcResponse,
-  SubmitPatrolAnswersRequest,
   PatrolResponse,
 } from "../../types/patrol/patrol";
+
+import type { SubmitPatrolAnswersRequest } from "../../types/patrol/patrol-answer";
 
 import type {
   SubmitPatrolPhotoRequest,

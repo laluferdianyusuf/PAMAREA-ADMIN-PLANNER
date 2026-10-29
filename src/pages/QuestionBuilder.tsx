@@ -11,8 +11,7 @@ import {
   TickCircle,
   Trash,
 } from "iconsax-react";
-import { useMemo, useState } from "react";
-import { usePatrolPoints } from "../hooks/patrol-point/usePatrolPoints";
+import { useState } from "react";
 import {
   useActiveQuestions,
   useCreateQuestion,
@@ -160,7 +159,6 @@ const QuestionBuilder = () => {
   // }, [selectedCheckpoint]);
 
   // const { data: questions } = useQuestions();
-  const { data: checkpoint } = usePatrolPoints();
   const { mutateAsync: questionBuilder, isPending } = useCreateQuestion();
   const { mutateAsync: deactivateQuestion, isPending: isDeactivating } =
     useDeactivateQuestion();
@@ -180,10 +178,6 @@ const QuestionBuilder = () => {
       isSafe: false,
     },
   ]);
-  const checkpointList = useMemo(() => {
-    return [...new Set(checkpoint?.map((q) => q.name))];
-  }, [checkpoint]);
-
   const handelOpenModal = () => {
     const modal = document.getElementById(
       "question_builder",
@@ -258,7 +252,7 @@ const QuestionBuilder = () => {
     };
 
     try {
-      const createdQuestion = await questionBuilder(payload);
+      await questionBuilder(payload);
 
       setQuestionText("");
       setQuestionType("YES_NO");

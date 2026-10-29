@@ -85,7 +85,7 @@ export interface PatrolReportUser {
   employeeNumber?: string | null;
   fullName?: string | null;
   username?: string | null;
-  patrols: PatrolReportItem[];
+  patrols?: PatrolReportItem[];
 }
 
 export interface PatrolReportExcelResponse {
@@ -669,18 +669,13 @@ export const exportPatrolReportExcel = async (
       if (validPhotos.length === 1) {
         addHyperlink(photoCell, validPhotos[0].url, validPhotos[0].fileName);
       } else if (validPhotos.length > 1) {
-        photoCell.value = validPhotos.map((photo) => ({
-          text: photo.fileName || "Buka Foto",
-          hyperlink: photo.url,
-          tooltip: photo.url,
-        }));
-
-        photoCell.font = {
-          name: "Arial",
-          size: 10,
-          color: { argb: "FF0563C1" },
-          underline: true,
-        };
+        addHyperlink(
+          photoCell,
+          validPhotos[0].url,
+          validPhotos
+            .map((photo) => photo.fileName || photo.url)
+            .join("\n"),
+        );
       } else {
         photoCell.value = "-";
       }
@@ -789,18 +784,11 @@ export const exportPatrolReportExcel = async (
     if (validPhotos.length === 1) {
       addHyperlink(photoCell, validPhotos[0].url, validPhotos[0].fileName);
     } else if (validPhotos.length > 1) {
-      photoCell.value = validPhotos.map((photo) => ({
-        text: photo.fileName || "Buka Foto",
-        hyperlink: photo.url,
-        tooltip: photo.url,
-      }));
-
-      photoCell.font = {
-        name: "Arial",
-        size: 10,
-        color: { argb: "FF0563C1" },
-        underline: true,
-      };
+      addHyperlink(
+        photoCell,
+        validPhotos[0].url,
+        validPhotos.map((photo) => photo.fileName || photo.url).join("\n"),
+      );
     } else {
       photoCell.value = "-";
     }

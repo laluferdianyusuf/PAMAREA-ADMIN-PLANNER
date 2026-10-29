@@ -1,5 +1,3 @@
-import React from "react";
-
 interface UserPaginationProps {
   currentPage: number;
   totalPages: number;

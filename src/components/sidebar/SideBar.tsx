@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ElementType } from "react";
 import {
   ArrowDown2,
   ArrowSwapHorizontal,
@@ -40,10 +40,10 @@ import Patrols from "../../pages/schedule/Patrols";
 
 type MenuItem = {
   name: string;
-  icon: React.ElementType;
+  icon: ElementType;
   children?: {
     name: string;
-    icon?: React.ElementType;
+    icon?: ElementType;
   }[];
 };
 
@@ -232,15 +232,15 @@ const Sidebar = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F8FA]">
-      <aside className="fixed left-0 top-0 z-40 h-screen w-72 bg-[#0B3B60]">
-        <div className="flex h-16 items-center gap-3 bg-[#002541] px-6">
+      <aside className="fixed left-0 top-0 z-40 flex h-screen w-72 flex-col overflow-hidden bg-[#0B3B60]">
+        <div className="flex h-16 shrink-0 items-center gap-3 bg-[#002541] px-6">
           {/* <img
             src={PLNLOGO}
             alt="PLN Logo"
             className="h-12 w-auto object-contain"
           /> */}
 
-          <div>
+          <div className="min-w-0 flex-1">
             <h1 className="text-md font-bold text-white">PAMAREA</h1>
 
             <p className="text-xs font-semibold uppercase text-[#009EDA]">
@@ -254,7 +254,7 @@ const Sidebar = () => {
           />
         </div>
 
-        <nav className="px-4 py-6">
+        <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-6">
           <p className="mb-4 px-2 text-xs font-semibold uppercase tracking-wider text-[#517CA4]">
             Operational Modules
           </p>
@@ -364,7 +364,7 @@ const Sidebar = () => {
           </div>
         </nav>
 
-        <div className="mt-auto border-t border-[#1C5277] p-4">
+        <div className="shrink-0 border-t border-[#1C5277] p-4">
           <button
             type="button"
             onClick={handleLogout}

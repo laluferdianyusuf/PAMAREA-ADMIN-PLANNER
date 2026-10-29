@@ -18,13 +18,9 @@ import {
 } from "iconsax-react";
 import { useMemo, useState } from "react";
 
-import {
-  useExportPatrolHistoryExcel,
-  usePatrolHistoryGroupedByUser,
-} from "../../hooks/schedule/usePatrolHistory";
+import { usePatrolHistoryGroupedByUser } from "../../hooks/schedule/usePatrolHistory";
 
 import { formatDateTime, formatTime } from "../../helpers/dateTime";
-import type { PatrolStatus } from "../../types";
 import type {
   PatrolHistoryGroupedByUser,
   PatrolHistoryItem,
@@ -238,16 +234,12 @@ const Patrols = () => {
     isFetching,
   } = usePatrolHistoryGroupedByUser();
 
-  const { mutate: exportExcel, isPending: isExporting } =
-    useExportPatrolHistoryExcel();
-
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [gpsFilter, setGpsFilter] = useState("");
   const [nfcFilter, setNfcFilter] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState<PatrolStatus | "">("");
 
   const [page, setPage] = useState(1);
   const pageSize = 10;

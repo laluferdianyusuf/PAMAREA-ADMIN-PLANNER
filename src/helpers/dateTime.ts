@@ -439,7 +439,7 @@ export const getRelativeDateLabel = (
 
 export const formatRelativeTime = (
   value: DateInput,
-  timezone = APP_TIMEZONE,
+  _timezone = APP_TIMEZONE,
 ): string => {
   const date = toDate(value);
 

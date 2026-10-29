@@ -1,6 +1,12 @@
 import { TickCircle, TimerStart } from "iconsax-react";
 
-const ShiftStatus = ({ status, statusDetail, statusType }) => {
+interface ShiftStatusProps {
+  status: string;
+  statusDetail?: string;
+  statusType?: string;
+}
+
+const ShiftStatus = ({ status, statusDetail, statusType }: ShiftStatusProps) => {
   if (statusType === "active") {
     return (
       <div className="bg-white shadow-sm rounded-xl px-2 py-0.5 flex items-center">

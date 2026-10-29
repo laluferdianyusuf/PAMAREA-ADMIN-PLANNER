@@ -1,55 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
-
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-
 import L from "leaflet";
-
 import "leaflet/dist/leaflet.css";
-import type { PatrolPoint, PatrolPointStatus } from "../../types";
-import { usePatrolPoints } from "../../hooks/patrol-point/usePatrolPoints";
+import { useEffect, useMemo, useState } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 
-// Icon marker aktif dan nonaktif
+import { usePatrolPoints } from "../../hooks/patrol-point/usePatrolPoints";
+import type { PatrolPointStatus } from "../../types";
+import type { PatrolPointResponse } from "../../types/patrol-point/patrolPoint";
 
 const createMarkerIcon = (active: boolean) => {
   return L.divIcon({
     className: "checkpoint-marker-wrapper",
-
     html: `
-
       <div style="
-
         width: 30px;
-
         height: 30px;
-
         display: flex;
-
         align-items: center;
-
         justify-content: center;
-
         border: 3px solid white;
-
         border-radius: 50%;
-
         background: ${active ? "#16A34A" : "#9CA3AF"};
-
         color: white;
-
         font-size: 12px;
-
         font-weight: 700;
-
         box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-
       ">
-
         ●
-
       </div>
-
     `,
-
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     popupAnchor: [0, -15],
@@ -57,7 +35,7 @@ const createMarkerIcon = (active: boolean) => {
 };
 
 interface MapControllerProps {
-  selectedCheckpoint: PatrolPoint | null;
+  selectedCheckpoint: PatrolPointResponse | null;
 }
 
 function MapController({ selectedCheckpoint }: MapControllerProps) {
@@ -66,21 +44,24 @@ function MapController({ selectedCheckpoint }: MapControllerProps) {
   useEffect(() => {
     if (!selectedCheckpoint) return;
 
-    map.flyTo(
-      [
-        Number(selectedCheckpoint.latitude),
+    const latitude = Number(selectedCheckpoint.latitude);
+    const longitude = Number(selectedCheckpoint.longitude);
 
-        Number(selectedCheckpoint.longitude),
-      ],
+    if (
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude) ||
+      latitude < -90 ||
+      latitude > 90 ||
+      longitude < -180 ||
+      longitude > 180
+    ) {
+      return;
+    }
 
-      18, // Batasi zoom ke level 18 terlebih dahulu
-
-      {
-        animate: true,
-
-        duration: 0.8,
-      },
-    );
+    map.flyTo([latitude, longitude], 18, {
+      animate: true,
+      duration: 0.8,
+    });
   }, [map, selectedCheckpoint]);
 
   return null;
@@ -92,7 +73,7 @@ interface MapsCheckpointProps {
 
 export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
   const [selectedCheckpoint, setSelectedCheckpoint] =
-    useState<PatrolPoint | null>(null);
+    useState<PatrolPointResponse | null>(null);
 
   const [filterStatus, setFilterStatus] = useState<"ALL" | PatrolPointStatus>(
     "ALL",
@@ -105,7 +86,7 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
     error,
   } = usePatrolPoints(siteId ? { siteId } : undefined);
 
-  const checkpoints = useMemo<PatrolPoint[]>(() => {
+  const checkpoints = useMemo<PatrolPointResponse[]>(() => {
     if (!Array.isArray(patrolPoints)) return [];
     return patrolPoints;
   }, [patrolPoints]);
@@ -114,10 +95,12 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
     if (filterStatus === "ALL") {
       return checkpoints;
     }
+
     return checkpoints.filter((item) => item.status === filterStatus);
   }, [checkpoints, filterStatus]);
 
   const center: [number, number] = [-8.421514, 116.707336];
+
   if (isPending) {
     return (
       <div className="mt-4 flex h-[450px] items-center justify-center rounded-xl border border-gray-200 bg-white">
@@ -130,6 +113,7 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
       </div>
     );
   }
+
   if (isError) {
     return (
       <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-6">
@@ -144,15 +128,13 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px] mt-4">
-      {/* MAP */}
+    <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_300px]">
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 px-4 py-3">
           <div>
             <h2 className="text-base font-semibold text-gray-800">
               Peta Patroli
             </h2>
-
             <p className="mt-1 text-sm text-gray-500">
               Lokasi pemeriksaan area operasional
             </p>
@@ -188,7 +170,8 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
 
             {filteredCheckpoints.map((item) => {
               const latitude = Number(item.latitude);
-              const longitude = Number(item.longitude); // Jangan tampilkan marker dengan koordinat tidak valid
+              const longitude = Number(item.longitude);
+
               if (
                 !Number.isFinite(latitude) ||
                 !Number.isFinite(longitude) ||
@@ -199,6 +182,7 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
               ) {
                 return null;
               }
+
               const isActive = item.status === "ACTIVE";
 
               return (
@@ -206,16 +190,17 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
                   key={item.id}
                   position={[latitude, longitude]}
                   icon={createMarkerIcon(isActive)}
-                  eventHandlers={{ click: () => setSelectedCheckpoint(item) }}
+                  eventHandlers={{
+                    click: () => setSelectedCheckpoint(item),
+                  }}
                 >
                   <Popup>
-                    {" "}
                     <div>
-                      {" "}
-                      <strong>{item.name}</strong> <p>{item.code}</p>{" "}
-                      <p> {item.description || "Tidak ada deskripsi"} </p>{" "}
-                      <p> Status: {isActive ? "Aktif" : "Nonaktif"} </p>{" "}
-                    </div>{" "}
+                      <strong>{item.name}</strong>
+                      <p>{item.code}</p>
+                      <p>{item.description || "Tidak ada deskripsi"}</p>
+                      <p>Status: {isActive ? "Aktif" : "Nonaktif"}</p>
+                    </div>
                   </Popup>
                 </Marker>
               );
@@ -228,7 +213,6 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
             <span className="h-3 w-3 rounded-full bg-green-600" />
             Checkpoint aktif
           </div>
-
           <div className="flex items-center gap-2">
             <span className="h-3 w-3 rounded-full bg-gray-400" />
             Checkpoint nonaktif
@@ -236,12 +220,9 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
         </div>
       </div>
 
-      {/* CHECKPOINT LIST */}
-
       <aside className="overflow-hidden rounded-xl border border-gray-200 bg-white">
         <div className="border-b border-gray-200 p-4">
           <h3 className="font-semibold text-gray-800">Daftar Area</h3>
-
           <p className="mt-1 text-sm text-gray-500">
             Pilih lokasi untuk melihat posisinya.
           </p>
@@ -253,8 +234,8 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
             }
             className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500"
           >
-            <option value="ALL">Semua Status</option>{" "}
-            <option value="ACTIVE">Aktif</option>{" "}
+            <option value="ALL">Semua Status</option>
+            <option value="ACTIVE">Aktif</option>
             <option value="INACTIVE">Nonaktif</option>
           </select>
         </div>
@@ -285,13 +266,11 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
                     <span className="block text-xs font-medium text-gray-500">
                       {item.code}
                     </span>
-
                     <span className="mt-1 block text-sm font-semibold text-gray-800">
                       {item.name}
                     </span>
-
                     <span className="mt-1 block text-xs leading-5 text-gray-500">
-                      {item.description}
+                      {item.description || "Tidak ada deskripsi"}
                     </span>
                   </span>
                 </button>
@@ -302,7 +281,6 @@ export default function MapsCheckpoint({ siteId }: MapsCheckpointProps) {
               <p className="text-sm font-medium text-gray-700">
                 Tidak ada checkpoint
               </p>
-
               <p className="mt-1 text-xs text-gray-500">
                 Tidak ditemukan lokasi dengan status tersebut.
               </p>
