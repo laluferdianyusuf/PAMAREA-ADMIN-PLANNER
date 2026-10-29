@@ -4,6 +4,7 @@ import HazardShiftChart from "../components/hazard/HazardShiftChart";
 import { formatDateTimeWITA } from "../helpers/dateTime";
 import { useFindings } from "../hooks/finding/useFIndings";
 import { exportFindingExcel } from "../utils/exportFindingExcel";
+import { getPhotoUrl } from "../utils/getPhoto";
 
 const ManageFinding = () => {
   const [search, setSearch] = useState({
@@ -47,26 +48,6 @@ const ManageFinding = () => {
     startIndex,
     startIndex + itemsPerPage,
   );
-
-  const API_URL =
-    import.meta.env.VITE_API_URL || "https://api.pamarea.com/api/v1";
-
-  const API_ORIGIN = new URL(API_URL).origin;
-
-  const getPhotoUrl = (fileUrl?: string | null): string => {
-    if (!fileUrl) return "";
-
-    // Jika URL sudah absolut, gunakan langsung.
-    if (/^https?:\/\//i.test(fileUrl)) {
-      return fileUrl;
-    }
-
-    // Jika URL relatif, arahkan ke origin backend.
-    return new URL(
-      fileUrl.startsWith("/") ? fileUrl : `/${fileUrl}`,
-      API_ORIGIN,
-    ).toString();
-  };
 
   // Nomor data yang sedang ditampilkan
   const startItem = filteredData.length > 0 ? startIndex + 1 : 0;
