@@ -1,5 +1,4 @@
 import {
-  AddSquare,
   BoxTime,
   Calendar,
   CalendarAdd,
@@ -204,21 +203,6 @@ const ManageSchedule = () => {
               satpam yang bertugas melakukan inspeksi menyeluruh ke seluruh 16
               Checkpoint (Full Circuit Patrol).
             </p>
-          </div>
-          <div className="flex items-center justify-end">
-            <button
-              onClick={() => {
-                (
-                  document.getElementById(
-                    "add_schedule",
-                  ) as HTMLDialogElement | null
-                )?.showModal();
-              }}
-              className="flex items-center bg-[#FED400] rounded-lg px-4 py-2 cursor-pointer"
-            >
-              <AddSquare size={20} color="black" />
-              <p className="text-sm font-semibold ml-2">Buat / Tambah Jadwal</p>
-            </button>
           </div>
         </div>
 
