@@ -15,6 +15,7 @@ import { formatDateTimeWITA, formatRelativeTime } from "../helpers/dateTime";
 import { useActivateNfc, useNfcTags } from "../hooks/nfc/useNfc";
 import { useAssignNfc } from "../hooks/patrol-point-nfc/usePatroPointNfc";
 import { usePatrolPoints } from "../hooks/patrol-point/usePatrolPoints";
+import Breadcrumb from "../components/breadcrumbs/Breadcrumb";
 
 const NfcManage = () => {
   const [search, setSearch] = useState({
@@ -141,13 +142,13 @@ const NfcManage = () => {
   // =========================================================
   // MODAL REGISTRASI NFC
   // =========================================================
-  const openRegisterModal = () => {
-    const modal = document.getElementById(
-      "register_nfc",
-    ) as HTMLDialogElement | null;
+  // const openRegisterModal = () => {
+  //   const modal = document.getElementById(
+  //     "register_nfc",
+  //   ) as HTMLDialogElement | null;
 
-    modal?.showModal();
-  };
+  //   modal?.showModal();
+  // };
 
   const closeRegisterModal = () => {
     const modal = document.getElementById(
@@ -241,30 +242,13 @@ const NfcManage = () => {
   };
   return (
     <div className="min-h-screen">
-      <div className="px-6 flex justify-between breadcrumbs text-sm bg-white border-b border-gray-200 h-14">
-        <ul className="mt-2">
-          <li>
-            <a className="text-gray-700 font-semibold">Dashboard</a>
-          </li>
-          <li>
-            <a className="text-gray-700 font-semibold">Command Center</a>
-          </li>
-          <li className="text-gray-700 font-semibold">Add Document</li>
-        </ul>
-
-        <div className="flex gap-2">
-          <div className="bg-black rounded-full px-2 py-1">
-            <p className="text-white text-lg font-bold mt-0.5">LO</p>
-          </div>
-
-          <div>
-            <h2 className="text-gray-800 text-sm font-semibold">Lalu Oki</h2>
-            <p className="text-gray-600 text-xs tracking-wider">
-              Chief Patrol Supervisor
-            </p>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "NFC Management" },
+          { label: "Register NFC " },
+        ]}
+      />
 
       <div className="px-6 pb-6">
         <div className="mt-5 grid grid-cols-2 gap-5">
@@ -279,26 +263,6 @@ const NfcManage = () => {
               enkripsi token dinamis AES-256, binding checkpoint patroli, serta
               audit integritas verifikasi personel lapangan.
             </p>
-          </div>
-
-          <div className="flex items-center justify-end">
-            <button
-              type="button"
-              onClick={openRegisterModal}
-              className="bg-[#FED400] shadow-sm rounded-lg p-3 cursor-pointer"
-            >
-              <div className="flex items-center gap-1">
-                <div className="bg-[#FED400] p-1 rounded-lg">
-                  <CardAdd size={17} color="#6F5C00" />
-                </div>
-
-                <div className="ml-1">
-                  <p className="text-gray-900 text-sm font-semibold">
-                    Daftarkan Tag NFC Baru
-                  </p>
-                </div>
-              </div>
-            </button>
           </div>
         </div>
 

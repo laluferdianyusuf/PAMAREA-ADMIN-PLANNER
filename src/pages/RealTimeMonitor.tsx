@@ -17,6 +17,7 @@ import { DocumentDownload, Graph, Task } from "iconsax-react";
 import { usePatrolRoundsGroupedByUser } from "../hooks/schedule/usePatrolRound";
 import { useGetScheduleAssigments } from "../hooks/schedule/usePatrolScheduleAssignment";
 import { usePatrolSchedules } from "../hooks/schedule/usePatrolSchedules";
+import Breadcrumb from "../components/breadcrumbs/Breadcrumb";
 
 type ShiftFilter = "ALL" | "PAGI" | "SIANG" | "MALAM";
 type PeriodFilter = "TODAY" | "WEEK" | "MONTH";
@@ -487,14 +488,6 @@ const RealTimeMonitor = () => {
           return;
         }
 
-        /*
-         * Hanya ronde yang sudah selesai atau sudah melewati
-         * waktu akhirnya yang dapat masuk penilaian.
-         *
-         * Ronde yang sudah melewati jadwal akhir tetapi statusnya
-         * PENDING tetap dapat dinilai sebagai ronde jatuh tempo.
-         * Namun checkpoint yang belum COMPLETED mendapat nilai 0.
-         */
         diagnostics.roundsFinished += 1;
 
         const assignment =
@@ -709,39 +702,13 @@ const RealTimeMonitor = () => {
 
   return (
     <div className="min-h-screen">
-      {/* Breadcrumb */}
-      <div className="px-6 flex justify-between items-center breadcrumbs text-sm bg-white border-b border-gray-200 h-14">
-        <ul className="flex gap-2 mt-2">
-          <li>
-            <a className="text-gray-700 font-semibold cursor-pointer">
-              Dashboard
-            </a>
-            <span className="mx-2 text-gray-400">/</span>
-          </li>
-          <li>
-            <a className="text-gray-700 font-semibold cursor-pointer">
-              Command Center
-            </a>
-            <span className="mx-2 text-gray-400">/</span>
-          </li>
-          <li className="text-gray-700 font-semibold">Real-Time Monitor</li>
-        </ul>
-
-        <div className="flex gap-2 items-center">
-          <div className="bg-black rounded-full px-2 py-1 w-8 h-8 flex items-center justify-center">
-            <p className="text-white text-sm font-bold">LO</p>
-          </div>
-
-          <div>
-            <h2 className="text-gray-800 text-sm font-semibold leading-tight">
-              Lalu Oki
-            </h2>
-            <p className="text-gray-500 text-xs tracking-wider">
-              Chief Patrol Supervisor
-            </p>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "Reat-Time Monitoring" },
+          { label: "Export Data" },
+        ]}
+      />
 
       <div className="px-6">
         {/* Header Dashboard */}

@@ -21,6 +21,7 @@ import {
   usePatrolRoundById,
   useReorderPatrolRoundCheckpoints,
 } from "../../hooks/schedule/usePatrolRound";
+import Breadcrumb from "../../components/breadcrumbs/Breadcrumb";
 
 type RoundSetupProps = {
   roundId: string;
@@ -192,6 +193,13 @@ const RoundSetup = ({ roundId, onBack }: RoundSetupProps) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "Operational Patrol" },
+          { label: "Round Management" },
+        ]}
+      />
       {/* Page Header */}
       <div className="border-b border-gray-200 bg-white px-6 py-4">
         <div className="mb-3 breadcrumbs text-sm">

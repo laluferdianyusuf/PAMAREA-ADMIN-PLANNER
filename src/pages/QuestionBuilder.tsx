@@ -22,149 +22,14 @@ import type {
   PhotoRequirement,
   QuestionType,
 } from "../types";
+import Breadcrumb from "../components/breadcrumbs/Breadcrumb";
 
 const QuestionBuilder = () => {
   const [patrolPointId] = useState("");
   const { data: activeQuestions } = useActiveQuestions(patrolPointId);
-  // const [selectedCheckpointQuestion, setselectedCheckpointQuestion] =
-  //   useState("");
-
-  // const questionBuilder = [
-  //   {
-  //     id: 1,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah kondisi pagar di area checkpoint dalam kondisi baik dan tidak mengalami kerusakan?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Keamanan Area",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol",
-  //   },
-  //   {
-  //     id: 2,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah pintu atau akses masuk checkpoint dalam kondisi tertutup dan terkunci dengan baik?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Akses",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol 2",
-  //   },
-  //   {
-  //     id: 3,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah area sekitar checkpoint bebas dari benda mencurigakan atau barang yang tidak seharusnya berada di lokasi?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Keamanan Area",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol",
-  //   },
-  //   {
-  //     id: 4,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah lampu penerangan di sekitar checkpoint berfungsi dengan baik?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Fasilitas",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol 2",
-  //   },
-  //   {
-  //     id: 5,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah CCTV di sekitar checkpoint terlihat aktif dan tidak mengalami gangguan?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Monitoring",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol 2",
-  //   },
-  //   {
-  //     id: 6,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah kondisi peralatan keselamatan di sekitar checkpoint dalam keadaan lengkap dan mudah diakses?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Keselamatan",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol 2",
-  //   },
-  //   {
-  //     id: 7,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah tidak terdapat genangan air atau kondisi lingkungan yang berpotensi membahayakan di sekitar checkpoint?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Lingkungan",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol",
-  //   },
-  //   {
-  //     id: 8,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah area checkpoint dalam kondisi bersih dan bebas dari sampah atau material yang mengganggu?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Kebersihan",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol 2",
-  //   },
-  //   {
-  //     id: 9,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah terdapat aktivitas atau orang yang mencurigakan di sekitar checkpoint?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Keamanan",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol",
-  //   },
-  //   {
-  //     id: 10,
-  //     ids: "Q-Sec-001",
-  //     question:
-  //       "Apakah seluruh kondisi checkpoint secara keseluruhan dalam keadaan aman dan normal?",
-  //     type: "YES_NO",
-  //     required: true,
-  //     requireReasonIfNo: true,
-  //     category: "Kondisi Umum",
-  //     status: "Aktif",
-  //     checkpoint: "Gedung Kontrol 2",
-  //   },
-  // ];
-
-  // const filterQuestion = useMemo(() => {
-  //   return questionBuilder.filter((q) => {
-  //     return selectedCheckpoint === q.checkpoint;
-  //   });
-  // }, [selectedCheckpoint]);
-
-  // const { data: questions } = useQuestions();
   const { mutateAsync: questionBuilder, isPending } = useCreateQuestion();
   const { mutateAsync: deactivateQuestion, isPending: isDeactivating } =
     useDeactivateQuestion();
-  // const { mutateAsync: createQuestionOption } = useCreateQuestionOption();
-
-  // const [code, setCode] = useState("");
   const [questionText, setQuestionText] = useState("");
   const [questionType, setQuestionType] = useState<QuestionType>("YES_NO");
   const [isRequired, setIsRequired] = useState<boolean>(true);
@@ -326,28 +191,13 @@ const QuestionBuilder = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="px-6 flex justify-between breadcrumbs text-sm bg-white border-b border-gray-200 h-14">
-        <ul className="mt-2">
-          <li>
-            <a className="text-gray-700 font-semibold">Dashboard</a>
-          </li>
-          <li>
-            <a className="text-gray-700 font-semibold">Command Center</a>
-          </li>
-          <li className="text-gray-700 font-semibold">Add Document</li>
-        </ul>
-        <div className="flex gap-2">
-          <div className="bg-black rounded-full px-2 py-1">
-            <p className="text-white text-lg font-bold mt-0.5">LO</p>
-          </div>
-          <div>
-            <h2 className="text-gray-800 text-sm font-semibold">Lalu Oki</h2>
-            <p className="text-gray-600 text-xs tracking-wider">
-              Chief Patrol Supervisor
-            </p>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "Question Builder" },
+          { label: "Add Question" },
+        ]}
+      />
 
       <div className="px-6 pb-6">
         <div className=" mt-5 grid grid-cols-2 gap-5">

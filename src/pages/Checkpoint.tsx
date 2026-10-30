@@ -1,11 +1,9 @@
 import {
   Box,
-  Card,
   CloseCircle,
   LinkSquare,
   Location,
   LocationAdd,
-  Pointer,
   SearchNormal,
   TickCircle,
   UserAdd,
@@ -17,13 +15,13 @@ import {
   useCreatePatrolPoint,
   usePatrolPoints,
 } from "../hooks/patrol-point/usePatrolPoints";
+import Breadcrumb from "../components/breadcrumbs/Breadcrumb";
 
 const Checkpoint = () => {
   const { user } = useAuthContext();
   const siteId = user?.siteId;
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("Semua");
-  // const [selectedNfc, setSelectedNfc] = useState("Semua");
   const { mutateAsync: createCheckpoint, isPending: isRegitering } =
     useCreatePatrolPoint();
 
@@ -185,7 +183,7 @@ const Checkpoint = () => {
       resetRegisterForm();
       handleCloseModal();
     } catch (error) {
-      alert("Error. saat tambah patrol point");
+      alert(error);
     }
   };
 
@@ -212,28 +210,13 @@ const Checkpoint = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="px-6 flex justify-between breadcrumbs text-sm bg-white border-b border-gray-200 h-14">
-        <ul className="mt-2">
-          <li>
-            <a className="text-gray-700 font-semibold">Dashboard</a>
-          </li>
-          <li>
-            <a className="text-gray-700 font-semibold">Command Center</a>
-          </li>
-          <li className="text-gray-700 font-semibold">Add Document</li>
-        </ul>
-        <div className="flex gap-2">
-          <div className="bg-black rounded-full px-2 py-1">
-            <p className="text-white text-lg font-bold mt-0.5">LO</p>
-          </div>
-          <div>
-            <h2 className="text-gray-800 text-sm font-semibold">Lalu Oki</h2>
-            <p className="text-gray-600 text-xs tracking-wider">
-              Chief Patrol Supervisor
-            </p>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "Patrol Point Management" },
+          { label: "Register Patrol Point" },
+        ]}
+      />
 
       <div className="px-6 pb-6">
         <div className="mt-5 grid grid-cols-2 gap-5">
@@ -292,9 +275,6 @@ const Checkpoint = () => {
                 >
                   {item.name}
                 </p>
-                {/* <div className="bg-blue-100 rounded-full px-2 py-1">
-                  <p className="text-gray-800 text-xs">{item.value}</p>
-                </div> */}
               </button>
             ))}
           </div>
@@ -368,8 +348,6 @@ const Checkpoint = () => {
 
                   <div className="flex items-center gap-2">
                     <p className="text-gray-500">{item.description}</p>
-                    {/* <div className="p-0.5 rounded-full h-[1px] bg-gray-400 mt-1" /> */}
-                    {/* <p className="text-red-600">{item.level}</p> */}
                   </div>
 
                   <div className="bg-gray-200 rounded-lg p-3 mt-2">
@@ -383,7 +361,6 @@ const Checkpoint = () => {
                       </p>
                     </div>
                   </div>
-                  {/* <div className=" min-h-[45px]"> */}
                   {item.nfcAssignments.find((i) => i.status) ? (
                     <div className="grid grid-cols-2 gap-6 items-center mt-5">
                       <div>
@@ -415,27 +392,6 @@ const Checkpoint = () => {
                     </div>
                   )}
                   {/* </div> */}
-
-                  <div className="flex items-center justify-evenly gap-2 mt-auto pt-5">
-                    <button className="bg-gray-100 rounded-sm py-1 items-center justify-center flex-1 cursor-pointer">
-                      <p>Edit Titik</p>
-                    </button>
-                    {item.status ? (
-                      <button className="flex items-center gap-1 justify-center bg-gray-200 rounded-sm py-1 flex-1 cursor-pointer">
-                        <Card size={17} color="#003B73" />
-                        <p className="text-[#003B73] font-semibold">
-                          Assign NFC Tag
-                        </p>
-                      </button>
-                    ) : (
-                      <button className="flex items-center gap-1 justify-center bg-[#FED400] rounded-sm py-1 flex-1 cursor-pointer">
-                        <Pointer size={17} color="#003B73" />
-                        <p className="text-[#003B73] font-semibold">
-                          Assign NFC Tag
-                        </p>
-                      </button>
-                    )}
-                  </div>
                 </div>
               );
             })

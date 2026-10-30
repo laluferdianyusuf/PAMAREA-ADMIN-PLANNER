@@ -5,6 +5,7 @@ import { formatDateTimeWITA } from "../helpers/dateTime";
 import { useFindings } from "../hooks/finding/useFIndings";
 import { exportFindingExcel } from "../utils/exportFindingExcel";
 import { getPhotoUrl } from "../utils/getPhoto";
+import Breadcrumb from "../components/breadcrumbs/Breadcrumb";
 
 const ManageFinding = () => {
   const [search, setSearch] = useState({
@@ -90,28 +91,13 @@ const ManageFinding = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="px-6 flex justify-between breadcrumbs text-sm bg-white border-b border-gray-200 h-14">
-        <ul className="mt-2">
-          <li>
-            <a className="text-gray-700 font-semibold">Dashboard</a>
-          </li>
-          <li>
-            <a className="text-gray-700 font-semibold">Command Center</a>
-          </li>
-          <li className="text-gray-700 font-semibold">Add Document</li>
-        </ul>
-        <div className="flex gap-2">
-          <div className="bg-black rounded-full px-2 py-1">
-            <p className="text-white text-lg font-bold mt-0.5">LO</p>
-          </div>
-          <div>
-            <h2 className="text-gray-800 text-sm font-semibold">Lalu Oki</h2>
-            <p className="text-gray-600 text-xs tracking-wider">
-              Chief Patrol Supervisor
-            </p>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "Finding Management" },
+          { label: "Export Data" },
+        ]}
+      />
 
       <div className="px-6 pb-6">
         <div className="my-5 grid grid-cols-2">

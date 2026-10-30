@@ -50,9 +50,7 @@ type MenuItem = {
 const Sidebar = () => {
   const [activeMenu, setActiveMenu] = useState("Dashboard");
   const [selectedRoundId, setSelectedRoundId] = useState<string | null>(null);
-  const [openGroups, setOpenGroups] = useState<string[]>([
-    "Operational Patrol",
-  ]);
+  const [openGroups, setOpenGroups] = useState<string[]>([]);
   const toggleGroup = (groupName: string) => {
     setOpenGroups((prev) =>
       prev.includes(groupName)
@@ -234,12 +232,11 @@ const Sidebar = () => {
     <div className="min-h-screen bg-[#F5F8FA]">
       <aside className="fixed left-0 top-0 z-40 flex h-screen w-72 flex-col overflow-hidden bg-[#0B3B60]">
         <div className="flex h-16 shrink-0 items-center gap-3 bg-[#002541] px-6">
-          {/* <img
-            src={PLNLOGO}
-            alt="PLN Logo"
+          <img
+            src={pamareaLogo}
+            alt="PAMAREA Logo"
             className="h-12 w-auto object-contain"
-          /> */}
-
+          />
           <div className="min-w-0 flex-1">
             <h1 className="text-md font-bold text-white">PAMAREA</h1>
 
@@ -247,11 +244,6 @@ const Sidebar = () => {
               Command Center
             </p>
           </div>
-          <img
-            src={pamareaLogo}
-            alt="PAMAREA Logo"
-            className="h-12 w-auto object-contain"
-          />
         </div>
 
         <nav className="min-h-0 flex-1 overflow-y-auto px-4 py-6">

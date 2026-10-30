@@ -27,6 +27,7 @@ import type {
 } from "../../types/patrol/patrol-history";
 import { getPhotoUrl } from "../../utils/getPhoto";
 import { exportPatrolReportExcel } from "../../utils/patrolReportExcel";
+import Breadcrumb from "../../components/breadcrumbs/Breadcrumb";
 
 const formatDuration = (
   startedAt?: string | null,
@@ -251,22 +252,8 @@ const Patrols = () => {
     PatrolHistoryGroupedByUser["user"] | null
   >(null);
 
-  /*
-   * Data dari endpoint:
-   *
-   * response.data = [
-   *   {
-   *     user: {...},
-   *     patrols: [...]
-   *   }
-   * ]
-   */
   const groupedUsers = response?.data ?? [];
 
-  /*
-   * Flatten hanya untuk kebutuhan tabel.
-   * Struktur response dari BE tidak diubah.
-   */
   const allPatrols = useMemo(() => {
     return groupedUsers.flatMap((group) =>
       group.patrols.map((patrol) => ({
@@ -276,9 +263,6 @@ const Patrols = () => {
     );
   }, [groupedUsers]);
 
-  /*
-   * Filter lokal untuk data yang sudah diterima.
-   */
   const filteredPatrols = useMemo(() => {
     const normalizedSearch = search.trim().toLowerCase();
 
@@ -336,10 +320,6 @@ const Patrols = () => {
     endDate,
   ]);
 
-  /*
-   * Ringkasan dihitung dari seluruh data yang diterima,
-   * bukan hanya hasil filter tabel.
-   */
   const summary = useMemo(() => {
     return {
       totalUsers: groupedUsers.length,
@@ -406,7 +386,6 @@ const Patrols = () => {
     } catch (error) {
       console.error("Gagal export laporan patroli:", error);
 
-      // Sesuaikan dengan sistem notifikasi yang Anda gunakan.
       alert(
         error instanceof Error
           ? error.message
@@ -416,42 +395,13 @@ const Patrols = () => {
   };
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      {/* BREADCRUMB HEADER */}
-      <div className="flex h-14 items-center justify-between border-b border-gray-200 bg-white px-6">
-        <div className="breadcrumbs text-sm">
-          <ul>
-            <li>
-              <span className="font-semibold text-gray-500">Dashboard</span>
-            </li>
-
-            <li>
-              <span className="font-semibold text-gray-500">
-                Command Center
-              </span>
-            </li>
-
-            <li>
-              <span className="font-semibold text-[#00529C]">
-                Riwayat Patrol
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#003B73]">
-            <span className="text-sm font-bold text-white">LO</span>
-          </div>
-
-          <div>
-            <h2 className="text-sm font-semibold text-gray-800">Lalu Oki</h2>
-
-            <p className="text-xs tracking-wide text-gray-500">
-              Chief Patrol Supervisor
-            </p>
-          </div>
-        </div>
-      </div>
+      <Breadcrumb
+        items={[
+          { label: "Dashboard", path: "/" },
+          { label: "Operational Patrol" },
+          { label: "Patrol History" },
+        ]}
+      />
 
       <div className="space-y-6 px-6 pb-8 pt-6">
         {/* PAGE TITLE */}
